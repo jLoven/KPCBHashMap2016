@@ -15,7 +15,8 @@ public class HashMapJLoven {
 	}
 	
 	//  Places given key value pair in hashmap.
-	//  If value already exists in hashmap, the new value provided will replace it.
+	//  If value already exists for a key in hashmap, the new value provided will replace it.
+	//  If hashes for different keys collide, the keys will be stored as a linked list inside the same index.
 	public boolean set(String aKey, Object aValue) {
 		KeyValuePair keyAndValue = new KeyValuePair();
 		keyAndValue.setKeyAndValue(aKey, aValue);
@@ -26,6 +27,7 @@ public class HashMapJLoven {
 			this.hashArray[simpleHashCodeForPlacement] = keyAndValue;
 		} else {
 			//  continue here
+			KeyValuePair existingKeyAndValue = this.hashArray[simpleHashCodeForPlacement];
 		}
 		return false;
 	}
