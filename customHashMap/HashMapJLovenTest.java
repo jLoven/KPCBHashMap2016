@@ -170,8 +170,11 @@ public class HashMapJLovenTest {
 		assertEquals(newObject2, hashed.delete("BB"));
 		assertNull(hashed.get("BB"));
 		assertNull(hashed.delete("BB"));
-		//assertEquals(newObject1, hashed.delete("Aa"));
-		//assertNull(hashed.get("Aa"));
-		//assertNull(hashed.delete("Aa"));
+		assertEquals(newObject1, hashed.get("Aa"));
+		assertEquals(newObject1, hashed.delete("Aa"));
+		assertNull(hashed.get("Aa"));
+		assertNull(hashed.delete("Aa"));
+		assertNull(hashed.get("BB"));
+		assertNull(hashed.delete("BB"));
 	}
 }

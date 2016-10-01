@@ -98,7 +98,7 @@ public class HashMapJLoven {
 			//  The node to be deleted may be somewhere inside the linked list:
 			boolean found = false;
 			while (!found && nextKeyAndValue != null) {
-				if (nextKeyAndValue.getValue() == aKey) {
+				if (nextKeyAndValue.getKey() == aKey) {
 					//  Delete this node:
 					savedValue = nextKeyAndValue.getValue();
 					currentKeyAndValue.setNextNode(nextKeyAndValue.getNextNode());
