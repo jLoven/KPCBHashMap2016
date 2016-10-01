@@ -1,4 +1,4 @@
-//  29 September 2016
+//  30 September 2016
 //  Jackie Loven
 //  jackieloven@gmail.com
 
@@ -9,13 +9,14 @@ public class HashMapJLoven {
 	private KeyValuePair[] hashArray;
 
 	//  Constructor. hashMapSize must be at least 1.
-	public HashMapJLoven(int hashMapSize) {
-		assert hashMapSize > 0;
+	public HashMapJLoven(int hashMapSize) throws IllegalArgumentException{
+		if (hashMapSize < 1) {
+			throw new IllegalArgumentException("Hashmap size must be at least 1.");
+		}
 		KeyValuePair[] hash = new KeyValuePair[hashMapSize];
 		hashArray = hash;
 	}
 
-	//  Places given key value pair in hashmap.
 	//  If value already exists for a key in hashmap, the new value provided will replace it.
 	//  If hashes for different keys collide, the keys will be stored as a linked list inside the same index.
 	public boolean set(String aKey, Object aValue) {
@@ -40,7 +41,7 @@ public class HashMapJLoven {
 						existingKeyAndValue = existingKeyAndValue.getNextNode();
 					}
 				}
-				//  Now if you're at the last element of the linked list:
+				//  Now at the last element of the linked list:
 				if (existingKeyAndValue.getNextNode() == null) {
 					if (existingKeyAndValue.getKey() == keyAndValue.getKey()) {
 						existingKeyAndValue.setValue(keyAndValue.getValue());
@@ -81,29 +82,35 @@ class KeyValuePair {
 	private Object value;
 	private KeyValuePair nextNode = null;
 
-	public void setKeyAndValue(String aKey, Object aValue) {
+	public void setKeyAndValue(String aKey, Object aValue) throws IllegalArgumentException {
+		if (aKey == null) {
+			throw new IllegalArgumentException("Key cannot be null.");
+		}
 		this.key = aKey;
 		this.value = aValue;
 	}
 
-	public void setKey(String aKey) {
+	public void setKey(String aKey) throws IllegalArgumentException {
+		if (aKey == null) {
+			throw new IllegalArgumentException("Key cannot be null.");
+		}
 		this.key = aKey;
+	}
+	
+	public String getKey() {
+		return this.key;
 	}
 
 	public void setValue(Object aValue) {
 		this.value = aValue;
 	}
 	
-	public void setNextNode(KeyValuePair aNextNode) {
-		this.nextNode = aNextNode;
-	}
-
-	public String getKey() {
-		return this.key;
-	}
-
 	public Object getValue() {
 		return this.value;
+	}
+	
+	public void setNextNode(KeyValuePair aNextNode) {
+		this.nextNode = aNextNode;
 	}
 	
 	public KeyValuePair getNextNode() {
