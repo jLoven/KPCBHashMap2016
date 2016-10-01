@@ -126,4 +126,21 @@ public class HashMapJLovenTest {
 	public void testLegalSizeHashmapConstructor() {
 		HashMapJLoven hashed = new HashMapJLoven(1);
 	}
+	
+	@Test
+	public void testDelete() {
+		KeyValuePair keyValue = new KeyValuePair();
+		Object newObject1 = new Object();
+		keyValue.setKeyAndValue("Aa", newObject1);
+		KeyValuePair keyValue1 = new KeyValuePair();
+		Object newObject2 = new Object();
+		keyValue1.setKeyAndValue("AA", newObject2);
+		
+		HashMapJLoven hashed = new HashMapJLoven(20);
+		assertTrue(hashed.set(keyValue.getKey(), keyValue.getValue()));
+		assertTrue(hashed.set(keyValue1.getKey(), keyValue1.getValue()));
+		
+		assertNull(hashed.delete("Z"));
+		assertEquals(newObject1, hashed.delete("Aa"));
+	}
 }
