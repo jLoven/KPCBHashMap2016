@@ -74,6 +74,8 @@ public class HashMapJLoven {
 		return null;
 	}
 
+	//  Deletes the value associated with the given key.
+	//  Returns the value on success or null if the key has no value.
 	public Object delete(String aKey) {
 		int hashCode = makeHashCode(aKey);
 		if (this.hashArray[hashCode] == null) {
@@ -110,6 +112,27 @@ public class HashMapJLoven {
 			}
 		}
 		return savedValue;
+	}
+	
+	//  Returns a float value representing the load factor 
+	//  (`(items in hash map)/(size of hash map)`) of the data structure.
+	//  Since the size of the data structure is fixed, this should never be greater than 1.
+	public float load() {
+		int totalItemsInMap = 0;
+		int lengthOfMap = this.hashArray.length;
+		for (int i = 0; i < lengthOfMap; i++) {
+			KeyValuePair currentNode = this.hashArray[i];
+			if (currentNode != null) {
+				totalItemsInMap++;
+				//  The following is for including the collided hashes:
+				/*while (currentNode.getNextNode() != null) {
+					totalItemsInMap++;
+					currentNode = currentNode.getNextNode();
+				}*/
+			}
+		}
+		float loadFactor = ((float) totalItemsInMap) / ((float) lengthOfMap);
+		return loadFactor;
 	}
 
 	private int makeHashCode(String aString) {

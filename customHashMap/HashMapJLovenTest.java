@@ -5,8 +5,6 @@
 package customHashMap;
 
 import static org.junit.Assert.*;
-
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class HashMapJLovenTest {
@@ -106,12 +104,12 @@ public class HashMapJLovenTest {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testIllegalSizeHashmapConstructor() {
-		HashMapJLoven hashed = new HashMapJLoven(0);
+		new HashMapJLoven(0);
 	}
 	
 	@Test
 	public void testLegalSizeHashmapConstructor() {
-		HashMapJLoven hashed = new HashMapJLoven(1);
+		new HashMapJLoven(1);
 	}
 	
 	@Test
@@ -176,5 +174,32 @@ public class HashMapJLovenTest {
 		assertNull(hashed.delete("Aa"));
 		assertNull(hashed.get("BB"));
 		assertNull(hashed.delete("BB"));
+	}
+	
+	@Test
+	public void testLoadFactor() {
+		KeyValuePair keyValue = new KeyValuePair();
+		Object newObject1 = new Object();
+		keyValue.setKeyAndValue("Aa", newObject1);
+		KeyValuePair keyValue1 = new KeyValuePair();
+		Object newObject2 = new Object();
+		keyValue1.setKeyAndValue("BB", newObject2);
+		KeyValuePair keyValue2 = new KeyValuePair();
+		Object newObject3 = new Object();
+		keyValue2.setKeyAndValue("BB", newObject3);
+		KeyValuePair keyValue3 = new KeyValuePair();
+		Object newObject4 = new Object();
+		keyValue3.setKeyAndValue("AA", newObject4);
+		
+		HashMapJLoven hashed = new HashMapJLoven(20);
+		assertTrue(hashed.set(keyValue.getKey(), keyValue.getValue()));
+		assertTrue(hashed.set(keyValue1.getKey(), keyValue1.getValue()));
+		assertEquals((float) 1/20, hashed.load(), 0.00000001);
+		
+		assertTrue(hashed.set(keyValue2.getKey(), keyValue2.getValue()));
+		assertEquals((float) 1/20, hashed.load(), 0.00000001);
+		
+		assertTrue(hashed.set(keyValue3.getKey(), keyValue3.getValue()));
+		assertEquals((float) 2/20, hashed.load(), 0.00000001);
 	}
 }
