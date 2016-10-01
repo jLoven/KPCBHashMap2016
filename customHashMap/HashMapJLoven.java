@@ -83,20 +83,33 @@ public class HashMapJLoven {
 		Object savedValue = null;
 		//  The key may be in the hashmap:
 		KeyValuePair currentKeyAndValue = this.hashArray[hashCode];
-		while (currentKeyAndValue != null) {
-			if (currentKeyAndValue.getKey() == aKey) {
-				savedValue = currentKeyAndValue.getValue();
-				//  Then replace it with the next element in the linked list.
-				while (currentKeyAndValue.getNextNode() != null) {
-					currentKeyAndValue.setKeyAndValue(currentKeyAndValue.getNextNode().getKey(), currentKeyAndValue.getNextNode().getValue());
-					currentKeyAndValue.setNextNode(currentKeyAndValue.getNextNode());
+		KeyValuePair nextKeyAndValue = currentKeyAndValue.getNextNode();
+		if (currentKeyAndValue.getKey() == aKey && nextKeyAndValue == null) {
+			//  The only node hashed to this index needs to be deleted:
+			savedValue = currentKeyAndValue.getValue();
+			this.hashArray[hashCode] = null;
+			return savedValue;
+		} else if (currentKeyAndValue.getKey() == aKey && nextKeyAndValue != null) {
+			//  First node is the node to be deleted:
+			savedValue = currentKeyAndValue.getValue();
+			this.hashArray[hashCode] = nextKeyAndValue;
+			return savedValue;
+		} else if (currentKeyAndValue.getKey() != aKey) {
+			//  The node to be deleted may be somewhere inside the linked list:
+			boolean found = false;
+			while (!found && nextKeyAndValue != null) {
+				if (nextKeyAndValue.getValue() == aKey) {
+					//  Delete this node:
+					savedValue = nextKeyAndValue.getValue();
+					currentKeyAndValue.setNextNode(nextKeyAndValue.getNextNode());
+					found = true;
+				} else {
+					currentKeyAndValue = nextKeyAndValue;
+					nextKeyAndValue = currentKeyAndValue.getNextNode();
 				}
-			} else {
-				currentKeyAndValue = currentKeyAndValue.getNextNode();
 			}
 		}
 		return savedValue;
-
 	}
 
 	private int makeHashCode(String aString) {
@@ -112,18 +125,12 @@ class KeyValuePair {
 	private Object value;
 	private KeyValuePair nextNode = null;
 
-	public void setKeyAndValue(String aKey, Object aValue) throws IllegalArgumentException {
-		if (aKey == null) {
-			throw new IllegalArgumentException("Key cannot be null.");
-		}
+	public void setKeyAndValue(String aKey, Object aValue) {
 		this.key = aKey;
 		this.value = aValue;
 	}
 
-	public void setKey(String aKey) throws IllegalArgumentException {
-		if (aKey == null) {
-			throw new IllegalArgumentException("Key cannot be null.");
-		}
+	public void setKey(String aKey) {
 		this.key = aKey;
 	}
 

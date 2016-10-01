@@ -105,19 +105,6 @@ public class HashMapJLovenTest {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void testNullKeyAndValueKeySet() {
-		KeyValuePair keyValue = new KeyValuePair();
-		Object newObject1 = new Object();
-		keyValue.setKeyAndValue(null, newObject1);
-	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void testNullKeySet() {
-		KeyValuePair keyValue = new KeyValuePair();
-		keyValue.setKey(null);
-	}
-	
-	@Test(expected = IllegalArgumentException.class)
 	public void testIllegalSizeHashmapConstructor() {
 		HashMapJLoven hashed = new HashMapJLoven(0);
 	}
@@ -128,7 +115,7 @@ public class HashMapJLovenTest {
 	}
 	
 	@Test
-	public void testDelete() {
+	public void testDeleteSingleKey() {
 		KeyValuePair keyValue = new KeyValuePair();
 		Object newObject1 = new Object();
 		keyValue.setKeyAndValue("Aa", newObject1);
@@ -142,5 +129,49 @@ public class HashMapJLovenTest {
 		
 		assertNull(hashed.delete("Z"));
 		assertEquals(newObject1, hashed.delete("Aa"));
+		assertNull(hashed.get("Aa"));
+		assertNull(hashed.delete("Aa"));
+	}
+	
+	@Test
+	public void testDeleteMultipleHashesToSameKeyInOrder() {
+		KeyValuePair keyValue = new KeyValuePair();
+		Object newObject1 = new Object();
+		keyValue.setKeyAndValue("Aa", newObject1);
+		KeyValuePair keyValue1 = new KeyValuePair();
+		Object newObject2 = new Object();
+		keyValue1.setKeyAndValue("BB", newObject2);
+		
+		HashMapJLoven hashed = new HashMapJLoven(20);
+		assertTrue(hashed.set(keyValue.getKey(), keyValue.getValue()));
+		assertTrue(hashed.set(keyValue1.getKey(), keyValue1.getValue()));
+		
+		assertEquals(newObject1, hashed.delete("Aa"));
+		assertNull(hashed.get("Aa"));
+		assertNull(hashed.delete("Aa"));
+		assertEquals(newObject2, hashed.delete("BB"));
+		assertNull(hashed.get("BB"));
+		assertNull(hashed.delete("BB"));
+	}
+	
+	@Test
+	public void testDeleteMultipleHashesToSameKeyOutOfOrder() {
+		KeyValuePair keyValue = new KeyValuePair();
+		Object newObject1 = new Object();
+		keyValue.setKeyAndValue("Aa", newObject1);
+		KeyValuePair keyValue1 = new KeyValuePair();
+		Object newObject2 = new Object();
+		keyValue1.setKeyAndValue("BB", newObject2);
+		
+		HashMapJLoven hashed = new HashMapJLoven(20);
+		assertTrue(hashed.set(keyValue.getKey(), keyValue.getValue()));
+		assertTrue(hashed.set(keyValue1.getKey(), keyValue1.getValue()));
+		
+		assertEquals(newObject2, hashed.delete("BB"));
+		assertNull(hashed.get("BB"));
+		assertNull(hashed.delete("BB"));
+		//assertEquals(newObject1, hashed.delete("Aa"));
+		//assertNull(hashed.get("Aa"));
+		//assertNull(hashed.delete("Aa"));
 	}
 }
